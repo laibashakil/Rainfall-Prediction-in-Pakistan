@@ -5,7 +5,7 @@ import numpy as np
 
 app = Flask(__name__)
 
-df = pd.read_csv('rainfall_1901_2016_pak.csv')
+df = pd.read_csv('dataset/rainfall_1901_2016_pak.csv')
 df.columns = df.columns.str.strip()
 
 month_map = {
