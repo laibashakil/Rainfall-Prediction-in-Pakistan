@@ -2,8 +2,10 @@ from flask import Flask, request, jsonify
 import pandas as pd
 from sklearn.linear_model import LinearRegression
 import numpy as np
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 df = pd.read_csv('dataset/rainfall_1901_2016_pak.csv')
 df.columns = df.columns.str.strip()
@@ -20,6 +22,10 @@ y = df['Rainfall - (MM)']
 
 model = LinearRegression()
 model.fit(X, y)
+
+@app.route('/')
+def index():
+    return "Rainfall Prediction API is running."
 
 @app.route('/predict', methods=['POST'])
 def predict():
