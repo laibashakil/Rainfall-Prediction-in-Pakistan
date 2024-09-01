@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rainfall Prediction System</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+
+        header {
+            font-size: 1.8em;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #4a90e2;
+        }
+
+        label {
+            display: block;
+            font-size: 1em;
+            margin-bottom: 8px;
+            text-align: left;
+        }
+
+        input[type="number"], select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            font-size: 1em;
+            color: #555;
+            background-color: #f9f9f9;
+        }
+
+        .button {
+            width: 100%;
+            padding: 12px;
+            font-size: 1.2em;
+            background-color: #4a90e2;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .button:hover {
+            background-color: #357ab7;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-size: 1.2em;
+            color: #4a90e2;
+            background-color: #eef6ff;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        footer {
+            margin-top: 40px;
+            font-size: 0.8em;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            Rainfall Prediction System
+        </header>
+
+        <form id="rainfallForm">
+            <label for="year">Year</label>
+            <input type="number" id="year" name="year" min="1901" max="2100" required>
+
+            <label for="month">Month</label>
+            <select id="month" name="month" required>
+                <option value="" disabled selected>Select a month</option>
+                <option value="January">January</option>
+                <option value="February">February</option>
+                <option value="March">March</option>
+                <option value="April">April</option>
+                <option value="May">May</option>
+                <option value="June">June</option>
+                <option value="July">July</option>
+                <option value="August">August</option>
+                <option value="September">September</option>
+                <option value="October">October</option>
+                <option value="November">November</option>
+                <option value="December">December</option>
+            </select>
+
+            <button type="submit" class="button">Predict Rainfall</button>
+        </form>
+
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        document.getElementById('rainfallForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const year = document.getElementById('year').value;
+            const month = document.getElementById('month').value;
+
+            fetch('http://127.0.0.1:5000/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    Year: parseInt(year),
+                    Month: month
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('result').innerText = `Predicted Rainfall for ${month} ${year}: ${data.prediction.toFixed(2)} mm`;
+            })
+            .catch(error => {
+                document.getElementById('result').innerText = `Error: ${error.message}`;
+            });
+        });
+    </script>
+</body>
+</html>
