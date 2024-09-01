@@ -9,11 +9,9 @@ import os
 app = Flask(__name__)
 CORS(app)
 
-# Load the dataset
 df = pd.read_csv(os.path.join('dataset', 'rainfall_1901_2016_pak.csv'))
 df.columns = df.columns.str.strip()
 
-# Map month names to numbers
 month_map = {
     'January': 1, 'February': 2, 'March': 3, 'April': 4,
     'May': 5, 'June': 6, 'July': 7, 'August': 8,
@@ -21,16 +19,13 @@ month_map = {
 }
 df['Month'] = df['Month'].map(month_map)
 
-# Prepare the data for modeling
 X = df[['Year', 'Month']]
 y = df['Rainfall - (MM)'] 
 
-# Create polynomial features with a moderate degree
 degree = 2.5  # Adjusted degree for balance
 poly = PolynomialFeatures(degree=int(degree))
 X_poly = poly.fit_transform(X)
 
-# Initialize and train the Polynomial Regression model
 model = LinearRegression()
 model.fit(X_poly, y)
 
