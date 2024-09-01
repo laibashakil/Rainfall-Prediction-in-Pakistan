@@ -1,8 +1,10 @@
 
 # 🌧️ Rainfall Prediction System
 
-**A simple yet powerful web application that predicts monthly rainfall based on historical data using machine learning.**
-![image](https://github.com/user-attachments/assets/6deb20d7-29b1-4c49-9708-76d5e3a94d7f)
+A simple yet powerful web application that predicts monthly rainfall based on historical data using machine learning.
+
+### Screenshot of App:
+![image](https://github.com/user-attachments/assets/2527faac-7589-49b1-8601-69e788452723)
 
 ## 📊 Dataset
 
@@ -12,13 +14,31 @@ The dataset used in this project includes historical monthly rainfall data from 
 -   **Month**: The month of the observation.
 -   **Rainfall (MM)**: The recorded rainfall in millimeters.
 
+
 ## 🤖 Machine Learning Model
 
-The machine learning model is a **Linear Regression** model built using Scikit-Learn. The model is trained on the historical dataset to predict rainfall for a given year and month. Key steps include:
+The machine learning model is based on **Polynomial Regression** with added custom trend analysis and noise to create realistic predictions. The model leverages historical data to predict rainfall for a given year and month, reflecting natural variability and gradual trends.
 
-1.  **Data Preprocessing**: Handling missing data, converting categorical data (months) into numerical values.
-2.  **Model Training**: Fitting the linear regression model on the training data.
-3.  **Prediction**: Using the trained model to predict rainfall based on the input year and month.
+### Key Steps Include:
+
+1.  **Data Preprocessing**:
+    
+    -   Handling missing data.
+    -   Converting categorical data (months) into numerical values.
+    -   Creating polynomial features to capture non-linear relationships.
+2.  **Model Training**:
+    
+    -   The model is trained using a polynomial regression approach to fit the historical data more accurately than a simple linear regression.
+3.  **Prediction**:
+    
+    -   Predictions include:
+        -   Polynomial regression-based estimation.
+        -   A custom cumulative trend based on historical patterns.
+        -   Added noise to mimic natural variability and avoid unrealistic flat predictions.
+
+### Visual Representation:
+
+![image](https://github.com/user-attachments/assets/7f7934c4-1023-4b2c-b1fd-68ff5007d576)
 
 ## 🛠️ Tech Stack
 
@@ -50,21 +70,4 @@ The machine learning model is a **Linear Regression** model built using Scikit-L
 ### API Usage
 
 The application also exposes a RESTful API that can be used to get predictions programmatically.
-![image](https://github.com/user-attachments/assets/b24d5be7-7e56-43be-80bd-a491d958dccf)
-
-**Endpoint**: `/predict`
-
-**Method**: `POST`
-
-**Payload Example**:
-
-`{
-  "Year": 2029,
-  "Month": "September"
-}` 
-
-**Response Example**:
-
-`{
-  "prediction": 23.743647858123385
-}`
+![image](https://github.com/user-attachments/assets/c310153f-0804-4d51-b13a-635e12d7690c)
