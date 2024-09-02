@@ -18,12 +18,10 @@ df['Month'] = df['Month'].map({
 X = df[['Year', 'Month']]
 y = df['Rainfall - (MM)']
 
-# Create polynomial features with a moderate degree
 degree = 2.5  # Adjusted degree for balance
 poly = PolynomialFeatures(degree=int(degree))
 X_poly = poly.fit_transform(X)
 
-# Initialize and train the Polynomial Regression model
 model = LinearRegression()
 model.fit(X_poly, y)
 
@@ -39,26 +37,21 @@ future_df = pd.DataFrame(future_data, columns=['Year', 'Month'])
 future_poly = poly.transform(future_df)
 future_predictions = model.predict(future_poly)
 
-# Create a smoother, more variable increase in predictions
 historical_trend = np.mean(y[-10:]) - np.mean(y[:10])
 yearly_trend = historical_trend / len(future_years)
 cumulative_trend = np.arange(len(future_years)) * yearly_trend
 
-# Adding noise with periodicity
 np.random.seed(42)
 seasonal_noise = np.sin(np.linspace(0, 12 * np.pi, len(future_predictions))) * 10
 noise = np.random.normal(0, 15, size=future_predictions.shape) + seasonal_noise
 future_predictions_adjusted = future_predictions + cumulative_trend.repeat(12) + noise
 
-# Combine historical and future predictions
 historical_df = df[['Year', 'Month', 'Rainfall - (MM)']]
 future_df['Rainfall - (MM)'] = future_predictions_adjusted
 combined_df = pd.concat([historical_df, future_df])
 
-# Group by year to get total annual rainfall
 annual_rainfall = combined_df.groupby('Year')['Rainfall - (MM)'].sum()
 
-# Plot the rainfall pattern
 plt.figure(figsize=(12, 6))
 plt.plot(annual_rainfall.index, annual_rainfall.values, label="Annual Rainfall (MM)", color='blue')
 plt.axvline(x=2016, color='red', linestyle='--', label="Start of Predictions")

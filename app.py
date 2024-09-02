@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 import pandas as pd
 from sklearn.linear_model import LinearRegression
 from sklearn.preprocessing import PolynomialFeatures
@@ -35,9 +35,13 @@ future_years = np.arange(2017, 2101)
 yearly_trend = historical_trend / len(future_years)
 cumulative_trend = np.arange(len(future_years)) * yearly_trend
 
+# @app.route('/')
+# def index():
+#     return "Rainfall Prediction API is running."
+
 @app.route('/')
 def index():
-    return "Rainfall Prediction API is running."
+    return render_template('index.html') 
 
 @app.route('/predict', methods=['POST'])
 def predict():
